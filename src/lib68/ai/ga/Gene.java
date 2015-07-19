@@ -5,15 +5,19 @@
  */
 package lib68.ai.ga;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
- * @author Administrator
+ * 遺伝子配列
+ * 遺伝子座の型、通常はbyteなのだが汎用性を持たせた
+ * @param <T>
  */
-public class Gene{
+public abstract class Gene<T extends Object> implements Comparable{
     
     /* 遺伝子配列 */
-    protected int[] chromosome;
+    protected ArrayList<T> chromosome;
     
     /* 遺伝子の評価値 */
     protected double fitness;
@@ -23,10 +27,8 @@ public class Gene{
      * @param n
      */
     public Gene(int n){
-        this.chromosome = new int[n];
-        for(int i=0; i<n; i++){
-            
-        }
+        this.chromosome = new ArrayList(n);
+        initChromosome(n);
     }
     
     /**
@@ -34,7 +36,17 @@ public class Gene{
      * @param g
      */
     public Gene(Gene g){
-        this.chromosome = Arrays.copyOf(g.chromosome, g.chromosome.length);
+        Collections.copy(this.chromosome, g.chromosome);
+        this.fitness = g.fitness;
+    }
+    
+    /**
+     * 初期化関数
+     */
+    private void initChromosome(int n){
+         for(int i=0; i<n; i++){
+            this.chromosome.add(this.getRandomChromosome());
+        }       
     }
     
     
@@ -43,9 +55,14 @@ public class Gene{
      * オーバライドして遺伝子を変えること。
      * @return 0-255
      */
-    protected int getRandomChromosome(){
-        return (int)(Math.random() * 255);
-    }
+    protected abstract T getRandomChromosome();
+    
+    /**
+     * 評価関数
+     * オーバライドして定義すること
+     */
+    public abstract double evaluate();
+    
     
     /**
      * 適応度を取得する
@@ -56,7 +73,56 @@ public class Gene{
     
     @Override
     public Gene clone(){
-        return new Gene(this);
+        return null;
     }
+    
+    
+    /**
+     * 遺伝子を表示する
+     */
+    public void println(){
+        for(int i=0; i<this.chromosome.size(); i++){
+            System.out.print(this.chromosome.get(i));
+            System.out.print(" ");
+        }
+        System.out.println();
+    }
+    
+    /**
+     * 突然変異する
+     * @param n 染色体n本をgetRandomChromosome()で初期化する
+     */
+    public void mutate(int n){
+        for(int i=0; i<n; i++){
+            this.chromosome.set((int)(i*Math.random()), this.getRandomChromosome());
+        }
+    }
+  
+    
+    
+    /**
+     * 一点交叉
+     * @param g
+     * ランダムに1点で交叉する
+     * 長い方をはみ出した部分は変化しない
+     */
+    public void onepointCrossover(Gene g){
+        int len = this.chromosome.size();
+        if(len>g.chromosome.size()) len = g.chromosome.size();
+        int index = (int)(Math.random()*len);   //交叉点
+        for(int i=index; i<len; i++){
+             T t = this.chromosome.get(i);
+             this.chromosome.set(i, (T)g.chromosome.get(i));
+             g.chromosome.set(i, t);   
+        }
+    }
+
+    
+    @Override
+    public int compareTo(Object o) {
+        Gene g = (Gene) o;
+        return Double.compare(this.fitness, g.fitness);
+    }
+    
     
 }

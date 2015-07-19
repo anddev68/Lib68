@@ -5,6 +5,8 @@
  */
 package lib68.ai.ga;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Administrator
@@ -48,7 +50,10 @@ public class GA {
      * m個の染色体をランダムに変更
      */
     public void mutate(int n,int m){
-        
+        for(int i=0; i<n; i++){
+            int r = (int)(Math.random()*(gene.length-1))+1;
+            gene[r].mutate(m);
+        }
     }
     
     
@@ -75,7 +80,7 @@ public class GA {
      * ランダムにN個の遺伝子を選んで、その中で最も適応度の
      * 大きなものを複製して返します。
      */
-    Gene doTournamentSelect(int n){
+    private Gene doTournamentSelect(int n){
         try{
             Gene max_gene=null;
             double max=Double.NEGATIVE_INFINITY;
@@ -87,10 +92,37 @@ public class GA {
                 }
             }
             return (Gene)max_gene.clone();
-        }catch(CloneNotSupportedException e){
+        }catch(Exception e){
             System.err.println("Error: "+e);
         }
         return null;
     }
+    
+    
+    /**
+     * 一点交叉する
+     */
+    public void onepointCrossover(){
+        Arrays.sort(gene);  //fitnessでソート
+        int n = gene.length;
+        for(int i=1; i<n/2; i++){
+            gene[i].onepointCrossover(gene[n-i]);
+        }
+        
+    }
+    
+    /**
+     * 評価プロセス
+     * 順次Geneの中のevaluate()を呼ぶ
+     */
+    public void evaluate(){
+        for(int i=0; i<this.gene.length; i++){
+            double d = gene[i].evaluate();
+            gene[i].fitness = d;
+        }
+    }
+    
+    
+    
     
 }
