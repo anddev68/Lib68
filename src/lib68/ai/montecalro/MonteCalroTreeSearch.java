@@ -24,22 +24,26 @@ public class MonteCalroTreeSearch {
     private int _playoutNum;
     
     //  UCB1の定数c,通常は√2
-    private static final double C = 1.4142135;
+    private static final double C = 2.0;
     
     //  プレイアウトの合計回数の最大値
-    private static final int MAX_TOTAL_PLAYOUT_NUM = 1000;
+    private static final int MAX_TOTAL_PLAYOUT_NUM = 20000;
     
     //  各ノードの拡張するプレイアウトの回数の閾値
-    private static final int MAX_PLAYOUT_NUM = 100;
+    private static final int MAX_PLAYOUT_NUM = 50;
     
     
     public MonteCalroTreeSearch(MonteCalroNode root){
         _root = root;
+        _ucbMax = Double.NEGATIVE_INFINITY;
     }
     
     
     public MonteCalroNode MCT() throws Exception{
     
+        //  最初だけ展開
+        _root.expand();
+        
         for(int i=0; i<MAX_TOTAL_PLAYOUT_NUM; i++){  //  MAX回数だけ実行
             
             //  プレイアウト候補をリセット
@@ -47,7 +51,14 @@ public class MonteCalroTreeSearch {
             _selectedNode = null;
         
             //  プレイアウトする葉を選択する
-            select(_root);
+            _selectedNode = _root;
+            while(_selectedNode.getChildrenSize()!=0){
+                select(_selectedNode);
+                _ucbMax = Double.NEGATIVE_INFINITY;
+            }
+            
+            
+            
             
             //  葉の選択チェック
             if(_selectedNode==null){
@@ -60,6 +71,7 @@ public class MonteCalroTreeSearch {
             
             //  閾値を超えたらノードを拡張し、子の0個目をプレイアウトする
             if( _selectedNode.getPlayNumber() > MAX_PLAYOUT_NUM ){
+                System.out.println("expanded node.");
                 _selectedNode.expand();
                 _selectedNode = (MonteCalroNode) _selectedNode.getChild(0);
             }
@@ -70,6 +82,9 @@ public class MonteCalroTreeSearch {
             //  値を更新する
             update(_selectedNode,isWin);
             
+            //  デバッグ用
+            if(i%1000==0)
+                System.out.println("passed:"+i+"/"+MAX_TOTAL_PLAYOUT_NUM);
         }
         
         //  ソートする
@@ -89,34 +104,29 @@ public class MonteCalroTreeSearch {
         //  子ノードの数を取得する
         int w = root.getChildrenSize();
         
+        
         /**
-         * 終端ノードであればそのノードをプレイアウト候補とし、
-         * UCB1法により値を計算
+         * プレイする子ノードを選択
          */
-        if( w==0 ){
+        for(int j=0; j<w; j++){
             
-            double xj = root.getScore();
+            MonteCalroNode nodej = (MonteCalroNode) root.getChild(j);
+            double xj = nodej.getScore();
             double n = this._playoutNum;    //プレイアウトした数
-            double nj = root.getPlayNumber();   //そのノードをプレイアウトした数
+            double nj = nodej.getPlayNumber();   //そのノードをプレイアウトした数
+
+            double ucb1 = nj==0? Double.POSITIVE_INFINITY : xj + C* Math.sqrt( 2*Math.log(n) / nj );
             
-            double ucb1 = xj + C* Math.sqrt( 2*Math.log(n) / nj );
-            
+                        
             //  UCB1値が既存のより大きいならそのノードをプレイアウト候補とする
             if(ucb1 > _ucbMax){
-                _selectedNode = root;
+                _selectedNode = nodej;
                 _ucbMax = ucb1;
             }
-
-            return;
+            
         }
         
-        
-        //  展開できる子ノードの数だけ再起的にチェックする
-        for(int j=0; j<w; j++){
-            MonteCalroNode nodej = (MonteCalroNode) root.getChild(j);
-            select(nodej);       
-        }
-        
+ 
         
     }
     
@@ -134,6 +144,9 @@ public class MonteCalroTreeSearch {
         //  親ノードを取得する
         MonteCalroNode node = (MonteCalroNode)leaf.getParent();
        
+        //  親ノードが取得できなければ終了
+        if(node==null) return;
+        
         //  親ノードの実行回数を増やす
         node.addPlayNumber();
         
