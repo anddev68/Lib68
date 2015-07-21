@@ -43,6 +43,11 @@ public class Main {
             }
             return total;
         }
+
+        @Override
+        public TestGene copy() {
+            return new TestGene(this);
+        }
         
     }
     
@@ -53,31 +58,34 @@ public class Main {
             初期個体の生成
             ここでは100個体、染色体40本で作成
         */
-        Gene[] gene = new TestGene[100];
+        TestGene[] gene = new TestGene[100];
         for(int i=0; i<100; i++){
-            gene[i] = new TestGene(4);
-        }
+            gene[i] = new TestGene(15);
+        }        
         
         GA ga = new GA(gene);
+        
+
+        
         
         /*
             指定した世代まで進化する
         */
-        for(int i=0; i<100; i++){
+        for(int i=0; i<1000; i++){
             
             ga.evaluate();  //  評価する
-            ga.select(4);   //  エリート保存＋4者選択トーナメント
-            ga.mutate(2,1); //  2個体、1本を突然変異させる
+            ga.select(10);   //  エリート保存＋4者選択トーナメント
+            ga.mutate(3,2); //  2個体、1本を突然変異させる
             ga.onepointCrossover(); //  交叉する
             
+            /*
+                一番よかったものを表示
+            */
+            System.out.print(i+" ");
+            ga.getElite().println(); 
+         
         }
-        
-        
-        /*
-            一番よかったものを表示
-        */
-        ga.getElite().println();
-        
+
     }
     
     

@@ -51,8 +51,8 @@ public class GA {
      */
     public void mutate(int n,int m){
         for(int i=0; i<n; i++){
-            int r = (int)(Math.random()*(gene.length-1))+1;
-            gene[r].mutate(m);
+            int r = (int)(Math.random()*(this.gene.length-1))+1;
+            this.gene[r].mutate(m);
         }
     }
     
@@ -82,8 +82,8 @@ public class GA {
      */
     private Gene doTournamentSelect(int n){
         try{
-            Gene max_gene=null;
-            double max=Double.NEGATIVE_INFINITY;
+            Gene max_gene=this.gene[0];
+            double max= this.gene[0].fitness;
             for(int i=0;i<n;i++){
                 int r=(int)(Math.random()*gene.length);
                 if(gene[r].getFitness()>max){
@@ -91,7 +91,8 @@ public class GA {
                     max=max_gene.getFitness();
                 }
             }
-            return (Gene)max_gene.clone();
+            Gene c = max_gene.copy();
+            return c;
         }catch(Exception e){
             System.err.println("Error: "+e);
         }

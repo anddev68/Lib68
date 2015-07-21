@@ -118,7 +118,7 @@ public abstract class AlphaBeta{
                     //  スコアがよければ入れ替える
                     if( _bestScore < alpha){
                         _bestScore = alpha;
-                        _bestNode = (GameNode) node.getChild(i);
+                        //_bestNode = (GameNode) node.getChild(i);
                     }
                     
                     

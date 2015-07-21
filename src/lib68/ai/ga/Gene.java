@@ -36,8 +36,7 @@ public abstract class Gene<T extends Object> implements Comparable{
      * @param g
      */
     public Gene(Gene g){
-        Collections.copy(this.chromosome, g.chromosome);
-        this.fitness = g.fitness;
+        this.chromosome = new ArrayList(g.chromosome);
     }
     
     /**
@@ -71,10 +70,8 @@ public abstract class Gene<T extends Object> implements Comparable{
         return this.fitness;
     }
     
-    @Override
-    public Gene clone(){
-        return null;
-    }
+   
+    public abstract Gene copy();
     
     
     /**
