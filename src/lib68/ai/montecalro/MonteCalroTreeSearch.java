@@ -71,7 +71,7 @@ public class MonteCalroTreeSearch {
             
             //  閾値を超えたらノードを拡張し、子の0個目をプレイアウトする
             if( _selectedNode.getPlayNumber() > MAX_PLAYOUT_NUM ){
-                System.out.println("expanded node.");
+                //System.out.println("expanded node.");
                 _selectedNode.expand();
                 _selectedNode = (MonteCalroNode) _selectedNode.getChild(0);
             }
@@ -83,8 +83,8 @@ public class MonteCalroTreeSearch {
             update(_selectedNode,isWin);
             
             //  デバッグ用
-            if(i%1000==0)
-                System.out.println("passed:"+i+"/"+MAX_TOTAL_PLAYOUT_NUM);
+            //if(i%1000==0)
+              //  System.out.println("passed:"+i+"/"+MAX_TOTAL_PLAYOUT_NUM);
         }
         
         //  ソートする
