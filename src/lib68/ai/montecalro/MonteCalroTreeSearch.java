@@ -27,10 +27,10 @@ public class MonteCalroTreeSearch {
     private static final double C = 2.0;
     
     //  プレイアウトの合計回数の最大値
-    private static final int MAX_TOTAL_PLAYOUT_NUM = 20000;
+    private static final int MAX_TOTAL_PLAYOUT_NUM = 40000;
     
     //  各ノードの拡張するプレイアウトの回数の閾値
-    private static final int MAX_PLAYOUT_NUM = 50;
+    private static final int MAX_PLAYOUT_NUM = 100;
     
     
     public MonteCalroTreeSearch(MonteCalroNode root){
@@ -78,17 +78,19 @@ public class MonteCalroTreeSearch {
             
             //  プレイアウトする
             boolean isWin = _selectedNode.doPlayout();
+            if(isWin) _selectedNode.addWinNumber();    //  勝利回数の追加
             
             //  値を更新する
             update(_selectedNode,isWin);
             
             //  デバッグ用
-            //if(i%1000==0)
-              //  System.out.println("passed:"+i+"/"+MAX_TOTAL_PLAYOUT_NUM);
+            if(i%1000==0)
+              System.out.println("passed:"+i+"/"+MAX_TOTAL_PLAYOUT_NUM);
         }
         
         //  ソートする
         _root.sortChildren();
+        
         
         //  一番良いのを返す
         return (MonteCalroNode) _root.getChild(0);
