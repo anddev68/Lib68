@@ -27,10 +27,10 @@ public class MonteCalroTreeSearch {
     private static final double C = 2.0;
     
     //  プレイアウトの合計回数の最大値
-    private static final int MAX_TOTAL_PLAYOUT_NUM = 10000;
+    private static final int MAX_TOTAL_PLAYOUT_NUM = 60000;
     
     //  各ノードの拡張するプレイアウトの回数の閾値
-    private static final int MAX_PLAYOUT_NUM = 30; //30
+    private static final int MAX_PLAYOUT_NUM = 15; //30
     
     
     public MonteCalroTreeSearch(MonteCalroNode root){
