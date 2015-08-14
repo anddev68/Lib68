@@ -39,8 +39,6 @@ public abstract class GameNode implements Node{
     /**
      * スコア順に並べる
      */
-    public void sort(){
-        
-    }
+    public abstract void sort();
     
 }

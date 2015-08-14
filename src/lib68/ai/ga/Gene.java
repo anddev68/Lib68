@@ -17,7 +17,7 @@ import java.util.Collections;
 public abstract class Gene<T extends Object> implements Comparable{
     
     /* 遺伝子配列 */
-    protected ArrayList<T> chromosome;
+    public ArrayList<T> chromosome;
     
     /* 遺伝子の評価値 */
     protected double fitness;
@@ -37,6 +37,12 @@ public abstract class Gene<T extends Object> implements Comparable{
      */
     public Gene(Gene g){
         this.chromosome = new ArrayList(g.chromosome);
+    }
+    
+    /**
+     * 何もしないコンストラクタ
+     */
+    protected Gene(){
     }
     
     /**

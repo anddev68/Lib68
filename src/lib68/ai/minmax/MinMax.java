@@ -10,11 +10,11 @@ import lib68.ai.alphabeta.GameNode;
 /**
  * ネガマックス法を適用するためのもの
  */
-public class NegaMax{
+public class MinMax{
     
     boolean isDebug = false;
     
-    public NegaMax(){
+    public MinMax(){
         
     }
     
@@ -33,16 +33,16 @@ public class NegaMax{
             return node.evaluate();
         }
         
+        //  通常は現在の局面でわけるが
+        //  次の局面は
+        
         double max = Double.NEGATIVE_INFINITY;
         for(int i=0; i<w; i++){
             double score = - execute((GameNode)node.getChild(i),depth-1);
-            if(score>max){
-                max = score;
-            }
+            if(score>max) max = score;
         }
-        //  自分以下のノードの値を検索して代入する
+        //  一番いい手を入れておく
         node.setScore(max);
-        
         return max;
         
     }
