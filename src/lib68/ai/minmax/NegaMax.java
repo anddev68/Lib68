@@ -33,6 +33,8 @@ public class NegaMax{
             return node.evaluate();
         }
         
+        //  評価値の大きいものを選択する
+        //  自分の手番のときは
         double max = Double.NEGATIVE_INFINITY;
         for(int i=0; i<w; i++){
             double score = - execute((GameNode)node.getChild(i),depth-1);
