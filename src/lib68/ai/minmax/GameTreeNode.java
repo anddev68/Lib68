@@ -23,7 +23,18 @@ public abstract class GameTreeNode {
     /**
      * ノードを展開する
      */
-    public abstract ArrayList<GameTreeNode> expandChildren();
+    public abstract void expandChildren();
+    
+    /**
+     * ノードを取得する
+     *  newを使わなくてもいいようにこのような処理を加えてあります
+     */
+    public abstract GameTreeNode getChild(int index);
+    
+    /**
+     * ノードサイズを取得する
+     */
+    public abstract int getChildrenSize();
     
     /**
      * 展開したノードを計算した結果を使って
@@ -31,4 +42,13 @@ public abstract class GameTreeNode {
      */
     public abstract void setScore(double d);
     
+    /**
+     * 展開したノードを戻す
+     */
+    public abstract void restoreMoving();
+    
+    /**
+     * 最後の動きを返す
+     */
+    public abstract Object getLastMoving();
 }
