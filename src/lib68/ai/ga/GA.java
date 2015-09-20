@@ -40,6 +40,12 @@ public class GA {
         return gene;    //  geneが最新
     }
     
+    /**
+     * サブツアー交換
+     */
+    
+    
+    
     
     /**
      * 突然変異

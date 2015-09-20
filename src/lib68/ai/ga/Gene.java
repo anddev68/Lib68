@@ -97,7 +97,7 @@ public abstract class Gene<T extends Object> implements Comparable{
      */
     public void mutate(int n){
         for(int i=0; i<n; i++){
-            this.chromosome.set((int)(i*Math.random()), this.getRandomChromosome());
+            this.chromosome.set((int)(this.chromosome.size()*Math.random()), this.getRandomChromosome());
         }
     }
   
