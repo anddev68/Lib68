@@ -86,8 +86,9 @@ public class MinMax<SolutionType>{
         ArrayList<MinMaxNode> children = new ArrayList<>();   //  展開された子ノード
         ArrayList<SolutionType> solutions = new ArrayList();  //  打った手
         
+        root.expand(children, solutions);
         
-        int w = 0;
+        int w = children.size();
         
         //  展開したノード数が0の場合は終局
         if(w==0){
@@ -100,7 +101,7 @@ public class MinMax<SolutionType>{
             for(int i=0; i<w; i++){
                 MinMaxNode child = children.get(i);
                 double score = __runAlgorism(depth-1,child);    //  再帰的に検索
-                if(score<max){  //  いい手があったらそれを選択
+                if(score>max){  //  いい手があったらそれを選択
                     max = score;
                     if(maxDepth==depth){
                         //  再帰の頭の場合は最適手であると考えられる
