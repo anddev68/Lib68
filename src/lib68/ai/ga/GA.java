@@ -40,6 +40,12 @@ public class GA {
         return gene;    //  geneが最新
     }
     
+    /**
+     * サブツアー交換
+     */
+    
+    
+    
     
     /**
      * 突然変異
@@ -123,7 +129,26 @@ public class GA {
         }
     }
     
+    /**
+     * 評価プロセス 順次Geneの中のevaluate()を呼ぶ
+     * 途中から再開できるようにした
+     * @param index はじめるgene
+     */
+    public void evaluate(int index) {
+        for (int i = index; i < this.gene.length; i++) {
+            double d = gene[i].evaluate();
+            gene[i].fitness = d;
+        }
+    }
     
-    
+    /**
+     * 評価値をすべてリセットする
+     */
+    public void resetFitness(){
+        for(int i=0; i<gene.length; i++){
+            gene[i].fitness = 0.0;
+        }
+    }
+        
     
 }
