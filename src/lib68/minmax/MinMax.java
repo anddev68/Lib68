@@ -43,6 +43,15 @@ public class MinMax<SolutionType>{
         //  実行
         double score = __runAlgorism(depth,root);
         
+        //  デバッグがONなら表示
+        if(this.isDebugging){
+            System.out.println();
+            System.out.print("MinMax#runAlgorism(),");
+            System.out.print(selectedSolution);
+            System.out.println(" "+score);
+            
+        }
+        
         return selectedSolution;   //  最大深さのものが次に打つべき解である
     }
     
@@ -63,6 +72,15 @@ public class MinMax<SolutionType>{
         this.maxDepth = depth;
         
         double score = __runAlgorism(depth,root);
+        
+        //  デバッグがONなら表示
+        if(this.isDebugging){
+            System.out.println();
+            System.out.print("MinMax#runAlgorism(),");
+            System.out.print(selectedSolution);
+            System.out.println(" "+score);
+        }
+        
         return this.selectedSolution;
     }
    
