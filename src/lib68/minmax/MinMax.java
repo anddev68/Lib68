@@ -150,10 +150,11 @@ public class MinMax<SolutionType>{
      * @throws new Exception
      */
     private double evaluate(MinMaxNode root) throws Exception{
-        if(root instanceof Evaluatable)
-            return ((Evaluatable)root).evaluate();
-        else if( evaluator!=null)
+        if(evaluator!=null)
             return evaluator.evaluate(root);
+        else if(root instanceof Evaluatable)
+            return ((Evaluatable)root).evaluate();
+
         
         throw new Exception("MinMax#evaluate(),評価関数が指定されていません");    
     }
